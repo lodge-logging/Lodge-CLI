@@ -47,9 +47,11 @@ function deployToExistingVPC(config) {
 
 function deployToNewVPC(config) {
   const APP_CIDR = config.newVPCCIDR;
-  const USER_CIDR = config.whitelistCIDR;
+  const USER_CIDR = config.userVPCCIDR;
 
-  cloneAndInstall("rgdonovan/frontend-todo-app");
+  console.log(APP_CIDR, USER_CIDR);
+  // cloneAndInstall("rgdonovan/frontend-todo-app");
+  sh.cd('~/webdev/projects/lodge-app')
   sh.exec(`cdk deploy ${stackName} --context USER_CIDR=${USER_CIDR} --context APP_CIDR=${APP_CIDR}`);
 }
 
@@ -60,10 +62,10 @@ async function cli(args) {
     prompts.displayHelp();
   } else if (choices.runInstall) {
     const config = await prompts.install();
-    if (config.deployment) {
+    if (config.deployment === "Use an existing VPC") {
       deployToExistingVPC(config);
     } else {
-      // deployToNewVPC(config);
+      deployToNewVPC(config);
     }
   }
 }
