@@ -2,6 +2,7 @@ const sh = require("shelljs");
 const arg = require("arg");
 const { Client } = require("ssh2");
 const { prompts } = require("../lib/prompts");
+const { getIps } = require('../lib/utils/getIps');
 const stackName = "ReginaStack";
 
 
@@ -34,13 +35,14 @@ function parseArgs(rawArgs) {
 }
 
 function deployToExistingVPC(config) {
-  const VPC_ID = config.vpcId;
-  const APP_CIDR = config.existingSubnetCIDR;
-  const IP_ADDRESSES = getThreeIps(APP_CIDR);
+  const VPC_ID = config.vpc.id;
+  const VPC_CIDR = config.vpc.cidr;
+  const IP_ADDRESSES = getIps(config.subnets).join(',');
 
-  cloneAndInstall("rgdonovan/frontend-todo-app");
+  //cloneAndInstall("rgdonovan/frontend-todo-app");
   // pass cidr to func and get 3 ips as list of strings. Write to json file in curr directory.
-  sh.exec(`cdk deploy ${stackName} --context VPC_ID=${VPC_ID} --context APP_CIDR=${APP_CIDR} --context IP_ADDRESSES=${IP_ADDRESSES}`);
+  sh.cd('~/webdev/projects/lodge-app')
+  sh.exec(`cdk deploy ${stackName} --context VPC_ID=${VPC_ID} --context VPC_CIDR=${VPC_CIDR} --context IP_ADDRESSES=${IP_ADDRESSES}`);
 }
 
 function deployToNewVPC(config) {
@@ -58,9 +60,8 @@ async function cli(args) {
     prompts.displayHelp();
   } else if (choices.runInstall) {
     const config = await prompts.install();
-    if (config.vpcId) {
-      console.log(getSubnetCidr(config.subnetId));
-      // deployToExistingVPC(config);
+    if (config.deployment) {
+      deployToExistingVPC(config);
     } else {
       // deployToNewVPC(config);
     }
