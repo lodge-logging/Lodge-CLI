@@ -10,7 +10,7 @@ I think it could be a good idea to wait for it too, since I'll really need the f
 
 
 If you would rather go at it while I'm gone though, the gist of what it needs to not error on runtime is:
-- I need to figure out how to get JSON response from shelljs .exec() to get back lists of vpc-ids and subnet-ids to get a list for the user to choose from (this eliminates having them input and check for errors at the end)
+- I need to figure out how to get JSON response from shelljs .exec() to get back lists of vpc-ids and subnet-ids to get a list for the user to choose from (this eliminates having to validate their input of these ids)
 - the questions list for the install right now still needs the info from the above bullet point to iterate through.
 - The aws calls are being put in the lib/aws.js file
 - I need to look at using inquirer to input the aws calls to generate the list for a user. 
