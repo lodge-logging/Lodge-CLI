@@ -1,10 +1,12 @@
 const sh = require("shelljs");
 const arg = require("arg");
 const { Client } = require("ssh2");
+const path = require('path');
 const { prompts } = require("../lib/prompts");
 const { getIps } = require('../lib/utils/getIps');
 const stackName = "ReginaStack";
-
+const stackPath = path.join(__dirname, '..', '..', 'lodge-app');
+const BASTION_ID = ""; //should be in outputs.json after deployment
 
 function getIPFromCidr(cidr) {
   // func 
@@ -21,6 +23,7 @@ function parseArgs(rawArgs) {
     {
       "--install": Boolean,
       "--help": Boolean,
+      "--connect": Boolean,
       "-i": "--install",
     },
     {
@@ -31,6 +34,7 @@ function parseArgs(rawArgs) {
   return {
     runInstall: expectedArgs["--install"] || false,
     showHelp: expectedArgs["--help"] || false,
+    connect: expectedArgs["--connect"] || false,
   }
 }
 
@@ -41,7 +45,7 @@ function deployToExistingVPC(config) {
 
   //cloneAndInstall("rgdonovan/frontend-todo-app");
   // pass cidr to func and get 3 ips as list of strings. Write to json file in curr directory.
-  sh.cd('~/webdev/projects/lodge-app')
+  sh.cd(stackPath);
   sh.exec(`cdk deploy ${stackName} --context VPC_ID=${VPC_ID} --context VPC_CIDR=${VPC_CIDR} --context IP_ADDRESSES=${IP_ADDRESSES}`);
 }
 
@@ -49,10 +53,14 @@ function deployToNewVPC(config) {
   const APP_CIDR = config.newVPCCIDR;
   const USER_CIDR = config.userVPCCIDR;
 
-  console.log(APP_CIDR, USER_CIDR);
   // cloneAndInstall("rgdonovan/frontend-todo-app");
-  sh.cd('~/webdev/projects/lodge-app')
+  sh.cd(stackPath);
   sh.exec(`cdk deploy ${stackName} --context USER_CIDR=${USER_CIDR} --context APP_CIDR=${APP_CIDR}`);
+}
+
+function SSMConnect(id) {
+  sh.cd(stackPath);
+  sh.exec(`aws ssm start-session --target ${id}`);
 }
 
 async function cli(args) {
@@ -67,6 +75,8 @@ async function cli(args) {
     } else {
       deployToNewVPC(config);
     }
+  } else if (choices.connect) {
+    SSMConnect(BASTION_ID);
   }
 }
 
@@ -74,11 +84,6 @@ async function cli(args) {
   X Tell them we assume they've already installed and configured aws cli
   X look in to automating cdk installation so they can run it. 
   X clone repo and npm install dependencies
-
-  deploy cdk 
-  wait for it to be done
-  run cdk deploy again
-  wait for it to be done again
  
   'lodge connect' and be able to run 'connect' to SSH to bastion host. 
   celebrate
