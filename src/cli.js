@@ -51,11 +51,12 @@ function deployToExistingVPC(config) {
 
 function deployToNewVPC(config) {
   const APP_CIDR = config.newVPCCIDR;
-  const USER_CIDR = config.userVPCCIDR;
+  const USER_CIDR = config.userVPC.cidr;
+  const USER_VPC_ID = config.userVPC.id;
 
   // cloneAndInstall("rgdonovan/frontend-todo-app");
   sh.cd(stackPath);
-  sh.exec(`cdk deploy ${stackName} --context USER_CIDR=${USER_CIDR} --context APP_CIDR=${APP_CIDR}`);
+  sh.exec(`cdk deploy ${stackName} --context APP_CIDR=${APP_CIDR} --context USER_CIDR=${USER_CIDR} --context USER_VPC_ID=${USER_VPC_ID}`);
 }
 
 function SSMConnect(id) {
