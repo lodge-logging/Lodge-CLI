@@ -3,13 +3,9 @@
   "version": "1.0.0",
   "description": "The Lodge bootstrapping CLI",
   "main": "src/index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "author": "",
   "license": "ISC",
   "bin": {
-    "create-lodging": "./bin/create-project.js",
     "lodge": "bin/create-project.js"
   },
   "publishConfig": {
@@ -23,7 +19,6 @@
     "arg": "^5.0.1",
     "aws-cdk": "^1.132.0",
     "inquirer": "^8.2.0",
-    "shelljs": "^0.8.4",
-    "ssh2": "^1.5.0"
+    "shelljs": "^0.8.4"
   }
 }

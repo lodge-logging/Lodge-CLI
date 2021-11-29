@@ -1,6 +1,5 @@
 const sh = require("shelljs");
 const arg = require("arg");
-const { Client } = require("ssh2");
 const path = require('path');
 const { prompts } = require("../lib/prompts");
 const { getIps } = require('../lib/utils/getIps');
@@ -13,16 +12,16 @@ const BASTION_ID = ""; //should be in outputs.json after deployment
 function cloneAndInstall(repo) {
   sh.exec(`git clone ${repo} ${appName}`);
   sh.cd(stackPath);
-  sh.exec("rm -rf .git .gitignore");
+  //sh.exec("rm -rf .git .gitignore");
   sh.exec("npm install");
 }
 
 function parseArgs(rawArgs) {
   const expectedArgs = arg(
     {
-      "init": Boolean,
-      "help": Boolean,
-      "connect": Boolean,
+      "--init": Boolean,
+      "--help": Boolean,
+      "--connect": Boolean,
     },
     {
       argv: rawArgs.slice(2)
@@ -30,9 +29,9 @@ function parseArgs(rawArgs) {
   );
 
   return {
-    runInit: expectedArgs["init"] || false,
-    showHelp: expectedArgs["help"] || false,
-    connect: expectedArgs["connect"] || false,
+    runInit: expectedArgs["--init"] || false,
+    showHelp: expectedArgs["--help"] || false,
+    connect: expectedArgs["--connect"] || false,
   }
 }
 
