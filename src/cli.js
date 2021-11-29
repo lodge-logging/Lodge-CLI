@@ -4,15 +4,13 @@ const path = require('path');
 const { prompts } = require("../lib/prompts");
 const { getIps } = require('../lib/utils/getIps');
 const repo = 'https://github.com/lodge-logging/Lodge.git';
-const stackName = "ReginaStack";
+const stackName = "LodgeAppStage";
 const appName = 'lodge-app';
 const stackPath = path.join(__dirname, appName);
-const BASTION_ID = ""; //should be in outputs.json after deployment
 
 function cloneAndInstall(repo) {
   sh.exec(`git clone ${repo} ${appName}`);
-  sh.cd(stackPath);
-  //sh.exec("rm -rf .git .gitignore");
+  sh.cd(`./${appName}`);
   sh.exec("npm install");
 }
 
@@ -41,7 +39,6 @@ function deployToExistingVPC(config) {
   const IP_ADDRESSES = getIps(config.subnets).join(',');
 
   cloneAndInstall(repo);
-  sh.cd(stackPath);
   sh.exec(`cdk deploy ${stackName} --context VPC_ID=${VPC_ID} --context VPC_CIDR=${VPC_CIDR} --context IP_ADDRESSES=${IP_ADDRESSES}`);
 }
 
@@ -51,13 +48,14 @@ function deployToNewVPC(config) {
   const USER_VPC_ID = config.userVPC.id;
 
   cloneAndInstall(repo);
-  sh.cd(stackPath);
+  sh.cd(appName);
   sh.exec(`cdk deploy ${stackName} --context APP_CIDR=${APP_CIDR} --context USER_CIDR=${USER_CIDR} --context USER_VPC_ID=${USER_VPC_ID}`);
 }
 
 function SSMConnect(id) {
-  sh.cd(stackPath);
-  sh.exec(`aws ssm start-session --target ${id}`);
+  console.log(id);
+  sh.cd(appName);
+  //sh.exec(`aws ssm start-session --target ${id}`);
 }
 
 async function cli(args) {
@@ -73,6 +71,7 @@ async function cli(args) {
       deployToNewVPC(config);
     }
   } else if (choices.connect) {
+    const BASTION_ID = require(`${appName}/outputs.json`);
     SSMConnect(BASTION_ID);
   }
 }
