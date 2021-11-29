@@ -4,27 +4,25 @@ const { Client } = require("ssh2");
 const path = require('path');
 const { prompts } = require("../lib/prompts");
 const { getIps } = require('../lib/utils/getIps');
+const repo = 'https://github.com/lodge-logging/Lodge.git';
 const stackName = "ReginaStack";
-const stackPath = path.join(__dirname, '..', '..', 'lodge-app');
+const appName = 'lodge-app';
+const stackPath = path.join(__dirname, appName);
 const BASTION_ID = ""; //should be in outputs.json after deployment
 
-function getIPFromCidr(cidr) {
-  // func 
-}
-
 function cloneAndInstall(repo) {
-  sh.exec(`gh repo clone ${repo}`);
-  sh.cd(repo.split("/")[1]);
+  sh.exec(`git clone ${repo} ${appName}`);
+  sh.cd(stackPath);
+  sh.exec("rm -rf .git .gitignore");
   sh.exec("npm install");
 }
 
 function parseArgs(rawArgs) {
   const expectedArgs = arg(
     {
-      "--install": Boolean,
-      "--help": Boolean,
-      "--connect": Boolean,
-      "-i": "--install",
+      "init": Boolean,
+      "help": Boolean,
+      "connect": Boolean,
     },
     {
       argv: rawArgs.slice(2)
@@ -32,9 +30,9 @@ function parseArgs(rawArgs) {
   );
 
   return {
-    runInstall: expectedArgs["--install"] || false,
-    showHelp: expectedArgs["--help"] || false,
-    connect: expectedArgs["--connect"] || false,
+    runInit: expectedArgs["init"] || false,
+    showHelp: expectedArgs["help"] || false,
+    connect: expectedArgs["connect"] || false,
   }
 }
 
@@ -43,8 +41,7 @@ function deployToExistingVPC(config) {
   const VPC_CIDR = config.vpc.cidr;
   const IP_ADDRESSES = getIps(config.subnets).join(',');
 
-  //cloneAndInstall("rgdonovan/frontend-todo-app");
-  // pass cidr to func and get 3 ips as list of strings. Write to json file in curr directory.
+  cloneAndInstall(repo);
   sh.cd(stackPath);
   sh.exec(`cdk deploy ${stackName} --context VPC_ID=${VPC_ID} --context VPC_CIDR=${VPC_CIDR} --context IP_ADDRESSES=${IP_ADDRESSES}`);
 }
@@ -54,7 +51,7 @@ function deployToNewVPC(config) {
   const USER_CIDR = config.userVPC.cidr;
   const USER_VPC_ID = config.userVPC.id;
 
-  // cloneAndInstall("rgdonovan/frontend-todo-app");
+  cloneAndInstall(repo);
   sh.cd(stackPath);
   sh.exec(`cdk deploy ${stackName} --context APP_CIDR=${APP_CIDR} --context USER_CIDR=${USER_CIDR} --context USER_VPC_ID=${USER_VPC_ID}`);
 }
@@ -69,8 +66,8 @@ async function cli(args) {
 
   if (choices.showHelp) {
     prompts.displayHelp();
-  } else if (choices.runInstall) {
-    const config = await prompts.install();
+  } else if (choices.runInit) {
+    const config = await prompts.init();
     if (config.deployment === "Use an existing VPC") {
       deployToExistingVPC(config);
     } else {
@@ -80,14 +77,5 @@ async function cli(args) {
     SSMConnect(BASTION_ID);
   }
 }
-
-/* do in stages. 
-  X Tell them we assume they've already installed and configured aws cli
-  X look in to automating cdk installation so they can run it. 
-  X clone repo and npm install dependencies
- 
-  'lodge connect' and be able to run 'connect' to SSH to bastion host. 
-  celebrate
-*/
 
 exports.cli = cli;

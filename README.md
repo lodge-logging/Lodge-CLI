@@ -1,10 +1,12 @@
 # Lodge-CLI
 
-The main functionality of the CLI is done. What's left is to figure out where the code for the stack is when it runs. Also, we need to decide if we are going to publish this, the stack, or both as npm packages.
+The main functionality of the CLI is done. What's left is to publish it as an npm package that can be installed globally. Once that is done, the user will download it , then run `lodge init`, which will clone the main repo into a subdirectory, install the dependencies, and deploy the cdk app with the necessary information provided by the user and retrieved by the aws cli. 
+
+We also need to communicate to the user that we are assuming they have the aws cli with ssm manager and the cdk cli installed and configured. We will most likely need to provide some instructions for these.
+
+Some ASCII art would be nice, too, once we settle on a logo.
 
 The gist of how it works is:
-- run lodge --install in the command line to use the tool
-- you may need to run npm link first
-- shelljs lets you run terminal commands and get the output. This means you can run an aws to show you a list of your (the user's) subnets that match a given filter, for example, and we can get that data back and format it and use it accordingly.
-- inquirer is an interface for generating questions / handling responses of the user through the cli. 
+- run `lodge init` in the command line to use the tool
+- you may need to run `npm link` first
 
