@@ -1,8 +1,7 @@
 {
   "name": "lodge-cli",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "The Lodge bootstrapping CLI",
-  "main": "src/main.js",
   "contributors": [
     {
       "name": "Sam Clark",
@@ -28,7 +27,7 @@
   "repository": "lodge-logging/Lodge-CLI",
   "license": "ISC",
   "bin": {
-    "lodge": "src/main.js"
+    "lodge": "bin/lodge-main.js"
   },
   "publishConfig": {
     "access": "public"
