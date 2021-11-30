@@ -1,19 +1,42 @@
 {
-  "name": "lodge_cli",
+  "name": "lodge-cli",
   "version": "1.0.0",
   "description": "The Lodge bootstrapping CLI",
-  "main": "src/index.js",
-  "author": "",
+  "contributors": [{
+    "name": "Sam Clark",
+    "email": "clarksam19@gmail.com",
+    "url": "https://samclark.dev"
+  },
+  {
+    "name": "Rana Deeb",
+    "email": "ranadeeb92@gmail.com",
+    "url": "https://www.linkedin.com/in/rana-deeb/"
+  },
+  {
+    "name": "Regina Donovan",
+    "email": "reginadonovan191@gmail.com",
+    "url": "https://www.linkedin.com/in/regina-donovan-82242040/"
+  },
+  {
+    "name": "Justin Lo",
+    "email": "justinkevinhl@gmail.com",
+    "url": "https://www.linkedin.com/in/justinkevinheilo/"
+  }],
+  "repository": "lodge-logging/Lodge-CLI",
   "license": "ISC",
   "bin": {
-    "lodge": "bin/create-project.js"
+    "init": "bin/lodge-init.js",
+    "help": "bin/lodge-help.js",
+    "connect": "bin/lodge-connect.js"
   },
   "publishConfig": {
     "access": "public"
   },
   "keywords": [
     "cli",
-    "create-project"
+    "elk",
+    "logging",
+    "logs"
   ],
   "dependencies": {
     "arg": "^5.0.1",
