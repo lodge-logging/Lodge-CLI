@@ -1,6 +1,6 @@
 {
   "name": "lodge-cli",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "The Lodge bootstrapping CLI",
   "main": "src/main.js",
   "contributors": [
@@ -28,9 +28,7 @@
   "repository": "lodge-logging/Lodge-CLI",
   "license": "ISC",
   "bin": {
-    "init": "bin/lodge-init.js",
-    "help": "bin/lodge-help.js",
-    "connect": "bin/lodge-connect.js"
+    "lodge": "src/main.js"
   },
   "publishConfig": {
     "access": "public"
