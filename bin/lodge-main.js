@@ -9,9 +9,12 @@ const command = process.argv[2];
 switch (command) {
   case 'init':
     init(process.argv);
+    break;
   case 'help':
     help(process.argv);
+    break;
   case 'connect':
     connect(process.argv);
+    break;
 }
 
