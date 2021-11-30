@@ -36,7 +36,7 @@ function deployToExistingVPC(config) {
   const IP_ADDRESSES = getIps(config.subnets).join(',');
 
   cloneAndInstall(repo);
-  sh.exec(`cdk deploy --all --context VPC_ID=${VPC_ID} --context VPC_CIDR=${VPC_CIDR} --context IP_ADDRESSES=${IP_ADDRESSES}`);
+  sh.exec(`cdk deploy --all -y --context VPC_ID=${VPC_ID} --context VPC_CIDR=${VPC_CIDR} --context IP_ADDRESSES=${IP_ADDRESSES}`);
 }
 
 function deployToNewVPC(config) {
@@ -46,7 +46,7 @@ function deployToNewVPC(config) {
 
   cloneAndInstall(repo);
   sh.cd(appName);
-  sh.exec(`cdk deploy --all --context APP_CIDR=${APP_CIDR} --context USER_CIDR=${USER_CIDR} --context USER_VPC_ID=${USER_VPC_ID}`);
+  sh.exec(`cdk deploy --all -y --context APP_CIDR=${APP_CIDR} --context USER_CIDR=${USER_CIDR} --context USER_VPC_ID=${USER_VPC_ID}`);
 }
 
 module.exports = async function init(args) {
