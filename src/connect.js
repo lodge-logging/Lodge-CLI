@@ -1,7 +1,6 @@
 const sh = require("shelljs");
 // const arg = require("arg");
 const appName = 'lodge-app';
-const vpcOutput = require(`${appName}/outputs.json`).LodgeVPCStack;
 
 // function parseArgs(rawArgs) {
 //   const expectedArgs = arg(
@@ -28,6 +27,7 @@ function SSMConnect(id) {
 }
 
 module.exports = async function connect(args) {
+  const vpcOutput = require(`${appName}/outputs.json`).LodgeVPCStack;
   const bastionOutput = Object.keys(vpcOutput).find(key => key.includes('SSH'));
   const bastionId = vpcOutput[bastionOutput];
   SSMConnect(bastionId);
