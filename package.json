@@ -1,27 +1,30 @@
 {
   "name": "lodge-cli",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "The Lodge bootstrapping CLI",
-  "contributors": [{
-    "name": "Sam Clark",
-    "email": "clarksam19@gmail.com",
-    "url": "https://samclark.dev"
-  },
-  {
-    "name": "Rana Deeb",
-    "email": "ranadeeb92@gmail.com",
-    "url": "https://www.linkedin.com/in/rana-deeb/"
-  },
-  {
-    "name": "Regina Donovan",
-    "email": "reginadonovan191@gmail.com",
-    "url": "https://www.linkedin.com/in/regina-donovan-82242040/"
-  },
-  {
-    "name": "Justin Lo",
-    "email": "justinkevinhl@gmail.com",
-    "url": "https://www.linkedin.com/in/justinkevinheilo/"
-  }],
+  "main": "src/main.js",
+  "contributors": [
+    {
+      "name": "Sam Clark",
+      "email": "clarksam19@gmail.com",
+      "url": "https://samclark.dev"
+    },
+    {
+      "name": "Rana Deeb",
+      "email": "ranadeeb92@gmail.com",
+      "url": "https://www.linkedin.com/in/rana-deeb/"
+    },
+    {
+      "name": "Regina Donovan",
+      "email": "reginadonovan191@gmail.com",
+      "url": "https://www.linkedin.com/in/regina-donovan-82242040/"
+    },
+    {
+      "name": "Justin Lo",
+      "email": "justinkevinhl@gmail.com",
+      "url": "https://www.linkedin.com/in/justinkevinheilo/"
+    }
+  ],
   "repository": "lodge-logging/Lodge-CLI",
   "license": "ISC",
   "bin": {
