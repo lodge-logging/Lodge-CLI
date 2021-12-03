@@ -36,7 +36,8 @@ function deployToExistingVPC(config) {
   const IP_ADDRESSES = JSON.stringify(getIps(config.subnets));
 
   cloneAndInstall(repo);
-  sh.exec(`cdk deploy --all -y --context VPC_ID=${VPC_ID} --context VPC_CIDR=${VPC_CIDR} --context IP_ADDRESSES=${IP_ADDRESSES}`);
+  sh.exec(`echo '${IP_ADDRESSES}' | sudo tee subnets.json`);
+  sh.exec(`cdk deploy --all -y --context VPC_ID=${VPC_ID} --context VPC_CIDR=${VPC_CIDR}`);
 }
 
 function deployToNewVPC(config) {
@@ -46,6 +47,7 @@ function deployToNewVPC(config) {
 
   cloneAndInstall(repo);
   sh.cd(appName);
+
   sh.exec(`cdk deploy --all -y --context APP_CIDR=${APP_CIDR} --context USER_CIDR=${USER_CIDR} --context USER_VPC_ID=${USER_VPC_ID}`);
 }
 
