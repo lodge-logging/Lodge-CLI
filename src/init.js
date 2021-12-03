@@ -33,7 +33,7 @@ function cloneAndInstall(repo) {
 function deployToExistingVPC(config) {
   const VPC_ID = config.vpc.id;
   const VPC_CIDR = config.vpc.cidr;
-  const IP_ADDRESSES = getIps(config.subnets).join(',');
+  const IP_ADDRESSES = JSON.stringify(getIps(config.subnets));
 
   cloneAndInstall(repo);
   sh.exec(`cdk deploy --all -y --context VPC_ID=${VPC_ID} --context VPC_CIDR=${VPC_CIDR} --context IP_ADDRESSES=${IP_ADDRESSES}`);
