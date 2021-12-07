@@ -1,16 +1,19 @@
 const sh = require("shelljs");
-// const arg = require("arg");
+const { writeFileSync } = require('fs');
 const { prompts } = require("../lib/prompts");
 const { getIps } = require('../lib/utils/getIps');
 const appName = 'lodge-app';
+const subnetPath = 'subnets.json';
 
 function deployToExistingVPC(config) {
   const VPC_ID = config.vpc.id;
   const VPC_CIDR = config.vpc.cidr;
-  const IP_ADDRESSES = JSON.stringify(getIps(config.subnets));
+  const IP_ADDRESSES = getIps(config.subnets);
+  const PRIVATE_SUBNET = config.privateSubnet;
+  const SUBNETS = Object.assign(IP_ADDRESSES, {privateSubnet: PRIVATE_SUBNET});
 
   sh.cd(appName);
-  sh.exec(`echo ${IP_ADDRESSES} | tee subnets.json`);
+  writeFileSync(subnetPath, JSON.stringify(SUBNETS));
   sh.exec(`cdk deploy --all -y --context VPC_ID=${VPC_ID} --context VPC_CIDR=${VPC_CIDR}`);
 }
 
