@@ -3,26 +3,51 @@ const { writeFileSync } = require('fs');
 const { prompts } = require("../lib/prompts");
 const { getIps } = require('../lib/utils/getIps');
 const appName = 'lodge-app';
-const subnetPath = 'subnets.json';
+const contextPath = 'user-data.json';
+let CONTEXT =  {
+  privateSubnets: {
+    subnetA: {
+      id: '',
+      ip: '',
+      az: ''
+    },
+    subnetB: {
+      id: '',
+      ip: '',
+      az: ''
+    },
+    subnetC: {
+      id: '',
+      ip: '',
+      az: ''
+    }
+  },
+  publicSubnet: { id: '', az: '' },
+  lodgeVpc: { id: '', cidr: '' },
+  userCidr: ''
+};
 
 function deployToExistingVPC(config) {
-  const VPC_ID = config.vpc.id;
-  const VPC_CIDR = config.vpc.cidr;
-  const IP_ADDRESSES = getIps(config.subnets);
-  const PRIVATE_SUBNET = config.privateSubnet;
-  const SUBNETS = Object.assign(IP_ADDRESSES, {privateSubnet: PRIVATE_SUBNET});
+  const PRIVATE_SUBNETS = getIps(config.subnets);
+  const PUBLIC_SUBNET = config.publicSubnet;
+
+  CONTEXT.privateSubnets = PRIVATE_SUBNETS;
+  CONTEXT.publicSubnet = PUBLIC_SUBNET;
+  CONTEXT.lodgeVpc = config.lodgeVpc;
+  CONTEXT.userCidr = config.userCidr;
 
   sh.cd(appName);
-  writeFileSync(subnetPath, JSON.stringify(SUBNETS));
-  sh.exec(`cdk deploy --all -y --context VPC_ID=${VPC_ID} --context VPC_CIDR=${VPC_CIDR}`);
+  writeFileSync(contextPath, JSON.stringify(CONTEXT));
+  sh.exec('cdk deploy --all -y');
 }
 
 function deployToNewVPC(config) {
-  const APP_CIDR = config.newVPCCIDR;
+  CONTEXT.lodgeVpc = config.lodgeVpc;
+  CONTEXT.userCidr = config.userCidr;
 
   sh.cd(appName);
-
-  sh.exec(`cdk deploy --all -y --context APP_CIDR=${APP_CIDR}`);
+  writeFileSync(contextPath, JSON.stringify(CONTEXT));
+  sh.exec('cdk deploy --all -y');
 }
 
 module.exports = async function deploy(args) {
