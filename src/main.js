@@ -6,4 +6,4 @@ const help = require('./help');
 const connect = require('./connect');
 const destroy = require('./destroy');
 
-module.exports = {init, help, connect, destroy};
+module.exports = {init, help, connect, destroy, deploy};
