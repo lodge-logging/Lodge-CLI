@@ -16,13 +16,10 @@ function deployToExistingVPC(config) {
 
 function deployToNewVPC(config) {
   const APP_CIDR = config.newVPCCIDR;
-  const USER_CIDR = config.userVPC.cidr;
-  const USER_VPC_ID = config.userVPC.id;
-
 
   sh.cd(appName);
 
-  sh.exec(`cdk deploy --all -y --context APP_CIDR=${APP_CIDR} --context USER_CIDR=${USER_CIDR} --context USER_VPC_ID=${USER_VPC_ID}`);
+  sh.exec(`cdk deploy --all -y --context APP_CIDR=${APP_CIDR}`);
 }
 
 module.exports = async function deploy(args) {
