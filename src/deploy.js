@@ -1,30 +1,8 @@
 const sh = require("shelljs");
 const { writeFileSync } = require('fs');
 const { prompts } = require("../lib/prompts");
-const appName = 'lodge-app';
-const contextPath = 'user-data.json';
-let CONTEXT =  {
-  privateSubnets: {
-    subnetA: {
-      id: '',
-      cidr: '',
-      az: ''
-    },
-    subnetB: {
-      id: '',
-      cidr: '',
-      az: ''
-    },
-    subnetC: {
-      id: '',
-      cidr: '',
-      az: ''
-    }
-  },
-  publicSubnet: { id: '', az: '' },
-  lodgeVpc: { id: '', cidr: '' },
-  userCidr: ''
-};
+const { EXISTING_VPC, COMMANDS, APP_NAME, CONTEXT, CONTEXT_PATH, OUTPUT_FILE } = require('../lib/constants');
+
 
 function deployToExistingVPC(config) {
   const PRIVATE_SUBNETS = config.privateSubnets;
@@ -35,23 +13,23 @@ function deployToExistingVPC(config) {
   CONTEXT.lodgeVpc = config.lodgeVpc;
   CONTEXT.userCidr = config.userCidr;
   
-  sh.cd(appName);
-  writeFileSync(contextPath, JSON.stringify(CONTEXT));
-  sh.exec('cdk deploy --all -y');
+  sh.cd(APP_NAME);
+  writeFileSync(CONTEXT_PATH, JSON.stringify(CONTEXT));
+  sh.exec(`${COMMANDS.DEPLOY} ${OUTPUT_FILE}`);
 }
 
 function deployToNewVPC(config) {
   CONTEXT.lodgeVpc = config.lodgeVpc;
   CONTEXT.userCidr = config.userCidr;
 
-  sh.cd(appName);
-  writeFileSync(contextPath, JSON.stringify(CONTEXT));
-  sh.exec('cdk deploy --all -y');
+  sh.cd(APP_NAME);
+  writeFileSync(CONTEXT_PATH, JSON.stringify(CONTEXT));
+  sh.exec(`${COMMANDS.DEPLOY} ${OUTPUT_FILE}`);
 }
 
 module.exports = async function deploy(args) {
   const config = await prompts.deploy();
-  if (config.deployment === "Use an existing VPC") {
+  if (config.deployment === EXISTING_VPC) {
     deployToExistingVPC(config);
   } else {
     deployToNewVPC(config);

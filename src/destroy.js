@@ -1,12 +1,12 @@
 const sh = require("shelljs");
 const { prompts } = require("../lib/prompts");
-const appName = 'lodge-app';
+const { APP_NAME, COMMANDS, KEY_NAME } = require('../lib/constants');
 
 module.exports = async function destroy(args) {
   const confirm = await prompts.destroy();
   if (confirm) {
-    sh.cd(appName);
-    sh.exec('cdk destroy --all --force');
-    sh.exec('aws ec2 delete-key-pair --key-name lodge-key');
+    sh.cd(APP_NAME);
+    sh.exec(COMMANDS.DESTROY);
+    sh.exec(`${COMMANDS.DELETE_KEY} ${KEY_NAME}`);
   }
 }

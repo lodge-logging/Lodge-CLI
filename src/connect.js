@@ -1,33 +1,13 @@
 const sh = require("shelljs");
-// const arg = require("arg");
-const appName = 'lodge-app';
-
-// function parseArgs(rawArgs) {
-//   const expectedArgs = arg(
-//     {
-//       "--init": Boolean,
-//       "--help": Boolean,
-//       "--connect": Boolean,
-//     },
-//     {
-//       argv: rawArgs.slice(2)
-//     }
-//   );
-
-//   return {
-//     runInit: expectedArgs["--init"] || false,
-//     showHelp: expectedArgs["--help"] || false,
-//     connect: expectedArgs["--connect"] || false,
-//   }
-// }
+const { COMMANDS, APP_NAME, OUTPUT_FILE } = require('../lib/constants');
 
 function SSMConnect(id) {
-  sh.cd(appName);
-  sh.exec(`aws ssm start-session --target ${id}`);
+  sh.cd(APP_NAME);
+  sh.exec(`${COMMANDS.CONNECT} ${id}`);
 }
 
 module.exports = async function connect(args) {
-  const vpcOutput = require(`${appName}/outputs.json`).LodgeVPCStack;
+  const vpcOutput = require(`${APP_NAME}/${OUTPUT_FILE}`).LodgeVPCStack;
   const bastionOutput = Object.keys(vpcOutput).find(key => key.includes('SSH'));
   const bastionId = vpcOutput[bastionOutput];
   SSMConnect(bastionId);

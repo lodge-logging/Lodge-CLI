@@ -1,31 +1,27 @@
 const sh = require("shelljs");
 const { execSync } = require("child_process");
 const { writeFileSync } = require("fs");
-const repo = 'https://github.com/lodge-logging/Lodge.git';
-const appName = 'lodge-app';
-const keyPath = 'bin/lodge-key.pem';
+const { APP_NAME, COMMANDS, KEY_NAME, KEY_PATH, REPO } = require('../lib/constants');
+
 const options = {stdio : 'pipe' };
 
 async function generateKey() {
-  const params = {
-    KeyName: "lodge-key",
-  };
   try {
-    const res = execSync('aws ec2 create-key-pair --key-name lodge-key');
+    const res = execSync(`${COMMANDS.CREATE_KEY} ${KEY_NAME}`);
     const key = JSON.parse(res).KeyMaterial
-    writeFileSync(keyPath, key);
+    writeFileSync(KEY_PATH, key);
   } catch (error) {
     console.log(error);
   }
 }
 
 async function cloneAndInstall(repo) {
-  sh.exec(`git clone ${repo} ${appName}`);
-  sh.cd(appName);
+  sh.exec(`git clone ${repo} ${APP_NAME}`);
+  sh.cd(APP_NAME);
   sh.exec("npm install");
 }
 
 module.exports = async function init(args) {
-  await cloneAndInstall(repo);
+  await cloneAndInstall(REPO);
   await generateKey();
 }
