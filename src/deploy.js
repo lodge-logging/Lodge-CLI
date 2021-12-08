@@ -34,7 +34,7 @@ function deployToExistingVPC(config) {
   CONTEXT.publicSubnet = PUBLIC_SUBNET;
   CONTEXT.lodgeVpc = config.lodgeVpc;
   CONTEXT.userCidr = config.userCidr;
-  console.log(CONTEXT);
+  
   sh.cd(appName);
   writeFileSync(contextPath, JSON.stringify(CONTEXT));
   sh.exec('cdk deploy --all -y');
