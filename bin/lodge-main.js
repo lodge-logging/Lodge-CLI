@@ -1,10 +1,6 @@
 #!/usr/bin/env node
 
-const connect = require("../src/connect");
-const help = require("../src/help");
-const init = require("../src/init");
-const destroy = require('../src/destroy');
-const deploy = require('../src/deploy');
+const { init, deploy, help, connect, destroy } = require('../src/main');
 
 const command = process.argv[2];
 

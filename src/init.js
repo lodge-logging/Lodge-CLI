@@ -22,6 +22,10 @@ async function cloneAndInstall(repo) {
 }
 
 module.exports = async function init(args) {
-  await cloneAndInstall(REPO);
-  await generateKey();
+  try {
+    await cloneAndInstall(REPO);
+    await generateKey();
+  } catch (error) {
+    console.error(error);
+  }
 }

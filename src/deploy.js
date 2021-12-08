@@ -28,10 +28,14 @@ function deployToNewVPC(config) {
 }
 
 module.exports = async function deploy(args) {
-  const config = await prompts.deploy();
-  if (config.deployment === EXISTING_VPC) {
-    deployToExistingVPC(config);
-  } else {
-    deployToNewVPC(config);
+  try {
+    const config = await prompts.deploy();
+    if (config.deployment === EXISTING_VPC) {
+      deployToExistingVPC(config);
+    } else {
+      deployToNewVPC(config);
+    }
+  } catch (error) {
+    console.error(error);
   }
 }

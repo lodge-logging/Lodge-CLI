@@ -7,8 +7,12 @@ function SSMConnect(id) {
 }
 
 module.exports = async function connect(args) {
-  const vpcOutput = require(`${APP_NAME}/${OUTPUT_FILE}`).LodgeVPCStack;
-  const bastionOutput = Object.keys(vpcOutput).find(key => key.includes('SSH'));
-  const bastionId = vpcOutput[bastionOutput];
-  SSMConnect(bastionId);
+  try {
+    const vpcOutput = require(`${APP_NAME}/${OUTPUT_FILE}`).LodgeVPCStack;
+    const bastionOutput = Object.keys(vpcOutput).find(key => key.includes('SSH'));
+    const bastionId = vpcOutput[bastionOutput];
+    SSMConnect(bastionId);
+  } catch (error) {
+    console.error(error);
+  }
 }
