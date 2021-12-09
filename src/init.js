@@ -53,10 +53,27 @@ async function cloneAndInstall(repo) {
   }
 }
 
+async function checkRegion() {
+  try {
+    const res = execSync(COMMANDS.GET_AZS);
+    const azList = JSON.parse(res).AvailabilityZones;
+    if (azList.length < 3) {
+      console.error(`AWS Region ${azList[0].RegionName} has less than 3 availability zones. Please use a different region`);
+      process.exit();
+    }
+  } catch (error) {
+    console.error('Failed to fetch availability zones from your region. Is your AWS CLI configured?');
+    console.error(error);
+  }
+}
+
 module.exports = async function init(args) {
   try {
     console.log('Verifying global installation of AWS CLI, AWS CDK, and AWS SSM...');
     await checkGlobalInstall(['aws', 'cdk', 'aws ssm']);
+    console.log('Verified');
+    console.log('Verifying 3 availability zones in your region...');
+    await checkRegion();
     console.log('Verified');
   } catch (error) {
     console.error(error);
