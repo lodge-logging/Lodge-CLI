@@ -1,6 +1,6 @@
 {
   "name": "lodge-cli",
-  "version": "1.0.23",
+  "version": "1.0.24",
   "description": "The Lodge bootstrapping CLI",
   "contributors": [
     {
@@ -30,7 +30,7 @@
     "lodge": "bin/lodge-main.js"
   },
   "scripts": {
-    "postinstall": "node welcome.js"
+    "postinstall": "node lib/welcome.js"
   },
   "publishConfig": {
     "access": "public"
