@@ -1,10 +1,10 @@
 const sh = require("shelljs");
 const { writeFileSync } = require('fs');
-const { prompts } = require("../lib/prompts");
+const { prompts } = require("../lib/prompts/deploy-prompts");
 const { EXISTING_VPC, COMMANDS, APP_NAME, CONTEXT, CONTEXT_PATH, OUTPUT_FILE } = require('../lib/constants');
 
 
-function deployToExistingVPC(config) {
+async function deployToExistingVPC(config) {
   const PRIVATE_SUBNETS = config.privateSubnets;
   const PUBLIC_SUBNET = config.publicSubnet;
 
@@ -18,7 +18,7 @@ function deployToExistingVPC(config) {
   sh.exec(`${COMMANDS.DEPLOY} ${OUTPUT_FILE}`);
 }
 
-function deployToNewVPC(config) {
+async function deployToNewVPC(config) {
   CONTEXT.lodgeVpc = config.lodgeVpc;
   CONTEXT.userCidr = config.userCidr;
 
@@ -31,9 +31,9 @@ module.exports = async function deploy(args) {
   try {
     const config = await prompts.deploy();
     if (config.deployment === EXISTING_VPC) {
-      deployToExistingVPC(config);
+      await deployToExistingVPC(config);
     } else {
-      deployToNewVPC(config);
+      await deployToNewVPC(config);
     }
   } catch (error) {
     console.error(error);

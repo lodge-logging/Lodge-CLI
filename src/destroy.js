@@ -1,5 +1,5 @@
 const sh = require("shelljs");
-const { prompts } = require("../lib/prompts");
+const prompts = require("../lib/prompts/destroy-prompts");
 const { APP_NAME, COMMANDS, KEY_NAME } = require('../lib/constants');
 
 module.exports = async function destroy(args) {
