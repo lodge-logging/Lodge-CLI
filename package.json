@@ -29,6 +29,9 @@
   "bin": {
     "lodge": "bin/lodge-main.js"
   },
+  "scripts": {
+    "postinstall": "node welcome.js"
+  },
   "publishConfig": {
     "access": "public"
   },
