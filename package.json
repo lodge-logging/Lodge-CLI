@@ -43,6 +43,8 @@
   ],
   "dependencies": {
     "arg": "^5.0.1",
+    "ascii-art": "^2.8.5",
+    "ascii-art-ansi": "^1.4.1",
     "aws-cdk": "^1.132.0",
     "inquirer": "^8.2.0",
     "shelljs": "^0.8.4"
