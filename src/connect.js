@@ -8,8 +8,10 @@ function SSMConnect(id) {
 
 module.exports = async function connect(args) {
   try {
-    const bastionOutput = require(`${APP_NAME}/${OUTPUT_FILE}`)[BASTION_STACK_NAME];
-    const bastionId = bastionOutput[0];
+    const bastionOutput = require(`${APP_NAME}/${OUTPUT_FILE}`)[BASTION_STACK_NAME]
+    const idOutputKey = Object.keys(bastionOutput).find(key => key.includes('SSH'));
+    const bastionId = bastionOutput[idOutputKey];
+
     SSMConnect(bastionId);
   } catch (error) {
     console.error(error);
