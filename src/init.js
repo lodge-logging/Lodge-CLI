@@ -16,20 +16,20 @@ const options = { stdio: "pipe" };
 async function generateKey() {
   let res;
   try {
-    console.log("Generating SSH key...");
+    console.log(art.style("Generating SSH key...", "white"));
     res = execSync(`${COMMANDS.CREATE_KEY} ${KEY_NAME}`, options);
     console.log(art.style("Done", "green"));
   } catch (error) {
-    console.log(
+    console.error(
       art.style("Failed to create SSH key. Please see error below:", "red")
     );
-    console.log(error);
+    console.error(error);
     process.exit();
   }
 
   try {
     const key = JSON.parse(res).KeyMaterial;
-    console.log(`Writing SSH key to ${KEY_PATH}...`);
+    console.log(art.style(`Writing SSH key to ${KEY_PATH}...`, "white"));
     writeFileSync(KEY_PATH, key);
   } catch (error) {
     console.error(
@@ -42,7 +42,9 @@ async function generateKey() {
 
 async function cloneAndInstall(repo) {
   try {
-    console.log("Cloning CDK app into lodge-app directory...");
+    console.log(
+      art.style("Cloning CDK app into lodge-app directory...", "white")
+    );
     execSync(`git clone ${repo} ${APP_NAME}`, options);
     console.log(art.style("Done", "green"));
   } catch (error) {
@@ -54,7 +56,7 @@ async function cloneAndInstall(repo) {
   sh.cd(APP_NAME);
 
   try {
-    console.log("Installing CDK app dependencies...");
+    console.log(art.style("Installing CDK app dependencies...", "white"));
     execSync("npm install", options);
     console.log(art.style("Done", "green"));
   } catch (error) {
@@ -93,11 +95,16 @@ async function checkRegion() {
 module.exports = async function init(args) {
   try {
     console.log(
-      "Verifying global installation of AWS CLI, AWS CDK, and AWS SSM..."
+      art.style(
+        "Verifying global installation of AWS CLI, AWS CDK, and AWS SSM...",
+        "white"
+      )
     );
     await checkGlobalInstall(["aws", "cdk", "aws ssm"]);
     console.log(art.style("Verified", "green"));
-    console.log("Verifying 3 availability zones in your region...");
+    console.log(
+      art.style("Verifying 3 availability zones in your region...", "white")
+    );
     await checkRegion();
     console.log(art.style("Verified", "green"));
   } catch (error) {
@@ -107,7 +114,13 @@ module.exports = async function init(args) {
     await cloneAndInstall(REPO);
     await generateKey();
     console.log(
-      'Lodge initialization complete. Run "lodge deploy" to deploy Lodge'
+      art.style(
+        `Lodge initialization complete. To deploy Lodge, run ${art.style(
+          "lodge deploy",
+          "yellow"
+        )}`,
+        "white"
+      )
     );
   } catch (error) {
     console.error(error);
