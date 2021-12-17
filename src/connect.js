@@ -1,4 +1,6 @@
 const sh = require("shelljs");
+const path = require('path');
+
 const { COMMANDS, APP_NAME, OUTPUT_FILE, BASTION_STACK_NAME } = require('../lib/constants');
 
 function SSMConnect(id) {
@@ -8,7 +10,7 @@ function SSMConnect(id) {
 
 module.exports = async function connect(args) {
   try {
-    const bastionOutput = require(`${APP_NAME}/${OUTPUT_FILE}`)[BASTION_STACK_NAME]
+    const bastionOutput = require(path.join(__dirname, OUTPUT_FILE))[BASTION_STACK_NAME]
     const idOutputKey = Object.keys(bastionOutput).find(key => key.includes('SSH'));
     const bastionId = bastionOutput[idOutputKey];
 
