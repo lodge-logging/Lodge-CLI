@@ -1,4 +1,4 @@
-![lodge-logo](https://github.com/lodge-logging/Lodge-CLI/blob/main/img/lodge-logo.png)
+![lodge-logo](https://github.com/lodge-logging/Lodge-CLI/blob/main/img/lodge_logo_color.png)
 
 ![shields.io npm version badge](https://img.shields.io/npm/v/lodge-cli)
 ![shields.io npm license badge](https://img.shields.io/npm/l/lodge-cli)
