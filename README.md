@@ -1,4 +1,4 @@
-# [![lodge-logo](https://github.com/lodge-logging/Lodge-CLI/public/img/lodge-logo.png)][github]
+# [![lodge-logo](https://github.com/lodge-logging/Lodge-CLI/img/lodge-logo.png)][github]
 
 [![shields.io npm version badge](https://img.shields.io/npm/v/lodge-cli)][npm]
 [![shields.io npm license badge](https://img.shields.io/npm/l/lodge-cli)][npm]
@@ -56,7 +56,7 @@ You'll need to have the above accounts and tools before running any Lodge CLI co
 npm i -g lodge-cli
 ```
 
-![lodge install](https://github.com/lodge-logging/Lodge-CLI/public/img/lodge-install.gif)
+![lodge install](https://github.com/lodge-logging/Lodge-CLI/img/lodge-install.gif)
 
 ## Lodge CLI Commands
 
@@ -73,7 +73,7 @@ npm i -g lodge-cli
 
 To initialize the Lodge application, run `lodge init`.
 
-![lodge init](https://github.com/lodge-logging/Lodge-CLI/public/img/lodge-init.gif)
+![lodge init](https://github.com/lodge-logging/Lodge-CLI/img/lodge-init.gif)
 
 ### `lodge init`
 
@@ -89,7 +89,7 @@ This command will:
 
 To deploy Lodge, run `lodge deploy`.
 
-![lodge deploy](https://github.com/lodge-logging/Lodge-CLI/public/img/lodge-deploy.gif)
+![lodge deploy](https://github.com/lodge-logging/Lodge-CLI/img/lodge-deploy.gif)
 
 ### `lodge deploy`
 
